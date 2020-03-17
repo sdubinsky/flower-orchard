@@ -2,9 +2,10 @@ require_relative 'card'
 require_relative 'improvement'
 
 class Player
-  attr_accessor :name, :improvements, :hand, :cash
-  def initialize(name)
+  attr_accessor :name, :id, :improvements, :hand, :cash
+  def initialize(name, id)
     @name = name
+    @id = id
     @cash = 3
     @improvements = initial_improvements
     @hand = initial_hand
