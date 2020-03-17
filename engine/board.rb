@@ -1,7 +1,7 @@
 require_relative 'card'
 class Board
   attr_accessor :players, :deck, :field, :started, :turnHistory, :current_player
-  def initialize
+  def initialize id
     @players = []
     @deck = new_deck
     @field = deal_field @deck
@@ -24,11 +24,9 @@ class Board
   end
 
   def add_player name
-    if not started
-      players << Player.new(name)
-    else
-      raise "game started, can't add new people"
-    end
+    raise "game has already started" if started
+    raise "already at max player count" if players.count >= 4
+    players << Player.new(name)
   end
 
   def can_roll_two?
