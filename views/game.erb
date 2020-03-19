@@ -1,0 +1,32 @@
+<%= @board %> <br />
+
+<% if !@board.started %>
+    <form id="addplayer" action="/game/<%= @game.id %>/addplayer" method="post">
+        <label for="playername">New player name:</label>
+        <input type="text" form="addplayer" name="playername" class="formquestion" />
+        <input type="submit" class="submit-button btn" value="Submit" />
+    </form>
+
+    <a href="/game/<%= @game.id %>/start" >Start Game</a>
+<% end %>
+<br />
+<% if @board.started %>
+    Current player: <%= @board.current_player.name %><br />
+    <% if !@board.current_turn.rolled %>
+        <a href="/game/<%= @game.id %>/roll?total=1">Roll One</a> &nbsp;
+        <% if @board.can_roll_two? %>
+            <a href="/game/<%= @game.id %>/roll?total=2">Roll Two</a>
+        <% end %>
+    <% else %>
+        Dice results: <%= @board.dice_display %> <br />
+        <form id="buycard" action="/game/<%= @game.id %>/buy" method="post">
+            <label for="card">Choose Card: </label>
+            <select name="cardname" id="cardname">
+                <% @board.field.each do |card| %>
+                    <option id="<%=card.name %>"><%=card.name.to_s %></option>
+                <% end %>
+            </select>
+            <input type="submit" class="submit-button" value="Submit" />
+        </form>
+    <% end %>
+<% end %>
