@@ -1,12 +1,13 @@
 class Card
-  attr_accessor :name, :description, :cost, :active_numbers, :count, :value
-  def initialize(name, description, cost, active_numbers, value)
+  attr_accessor :name, :description, :cost, :active_numbers, :count, :value, :color
+  def initialize(name, description, cost, active_numbers, value, color)
     @name = name
     @description = description
     @cost = cost
     @active_numbers = active_numbers
     @count = 1
     @value = value
+    @color = color
   end
 
   def == other

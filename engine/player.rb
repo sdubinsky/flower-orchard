@@ -13,8 +13,8 @@ class Player
 
   def initial_hand
     [
-      Card.new(:wheat, "wheat", 3, [1], 1),
-      Card.new(:bakery, "bakery", 1, [2, 3], 1)
+      Card.new(:wheat, "wheat", 3, [1], 1, :blue),
+      Card.new(:bakery, "bakery", 1, [2, 3], 1, :green)
     ]
   end
 
@@ -25,10 +25,25 @@ class Player
   end
 
   def activate_green_cards total
-    @cash += hand.
-              select{|x| x.active_numbers.include? total}.
-              map{|x| x.value * x.count}.
-              reduce(0, :+)
+    @cash += activate_cards :green, total
+  end
+
+  def activate_blue_cards total
+    @cash += activate_cards :blue, total
+  end
+
+  def activate_red_cards total
+    loss = activate_cards :red, total
+    @cash -= loss
+    loss
+  end
+
+  def activate_cards color, total
+    hand.
+      select { |x| x.color == color }.
+      select{|x| x.active_numbers.include? total}.
+      map{|x| x.value * x.count}.
+      reduce(0, :+)
   end
 
   def can_roll_two?

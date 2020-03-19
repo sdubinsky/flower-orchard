@@ -16,7 +16,7 @@ class Board
   def new_deck
     cards = []
     100.downto 0 do |x|
-      cards << Card.new(x.to_s, x.to_s, x, [1,2], x)
+      cards << Card.new(x.to_s, x.to_s, x, [1,2], x, :blue)
     end
     cards
   end
@@ -52,6 +52,7 @@ class Board
     dice_total = current_turn.roll_one + current_turn.roll_two
     dice_total += 2 if current_turn.add_two
     @current_player.activate_green_cards dice_total
+    @players.each{|p| p.activate_blue_cards dice_total}
   end
 
   def end_turn
