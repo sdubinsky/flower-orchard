@@ -1,6 +1,6 @@
 require 'rake/testtask'
 namespace :db do
-  db_address = ENV["DATABASE_URL"] || "postgres://localhost/mafiaisrael" 
+  db_address = ENV["DATABASE_URL"] || "postgres://localhost/machikoro"
   desc "Run migrations"
   task :migrate, [:version] do |t, args|
     require "sequel/core"

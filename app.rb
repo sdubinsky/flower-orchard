@@ -1,34 +1,90 @@
 require 'sinatra'
 require 'sequel'
-require 'engine/board'
-require 'models/init'
+require './engine/board'
+require 'pry'
+
+connstr = ENV['DATABASE_URL'] || "postgres://localhost/machikoro"
+DB = Sequel.connect connstr
+require './models/init'
 
 enable :sessions
 get '/' do
   erb :index
 end
 
-post '/game/create/:name/?' do
+get '/create_game/?' do
+  erb :create_game
+end
+
+post '/game/create/?' do
   board = Board.new
-  game = Game.create(
-    name: params['name'],
+  print params
+  Game.create(
+    name: params['gamename'],
     board: Marshal.dump(board)
   )
+  redirect "/"
 end
 
-post '/game/join' do
-  player = User[session['user_id'].to_i]
-  @game = Game[params['game_id'].to_i]
-  @board = Marshal.load(game.board)
-  @board.add_player player.name, player.id
+get '/games/?' do
+  @games = Game.all
+  erb :games
 end
 
-
-
-get '/games/?/:game_id?/?' do
+get '/game/:game_id/start/?' do
   @game = Game[params['game_id'].to_i]
-  @board = Marshal.load(game.board)
+  @board = Marshal.load @game.board
+  @board.start
+  @game.board = Marshal.dump @board
+  @game.save
   erb :game
+end
+
+get '/game/:game_id/?' do
+  @game = Game[params['game_id'].to_i]
+  @board = Marshal.load @game.board
+  erb :game
+end
+
+get '/game/:game_id/roll/?' do
+  @game = Game[params['game_id'].to_i]
+  @board = Marshal.load @game.board
+  @board.roll_dice params["total"].to_i
+  @board.run_turn
+  @game.board = Marshal.dump @board
+  @game.save  
+  redirect '/game/' + params['game_id']
+end
+
+post '/game/:game_id/addplayer' do
+  player = params["playername"]
+  @game = Game[params['game_id'].to_i]
+  @board = Marshal.load(@game.board)
+  begin
+    @board.add_player player, 1
+  rescue => e
+    @error_message = e.message
+  end
+  @game.board = Marshal.dump @board
+  @game.save
+  redirect "/game/" + params["game_id"]
+end
+
+post '/game/:game_id/buy' do
+  card = params["cardname"]
+  print card
+  @game = Game[params['game_id'].to_i]
+  @board = Marshal.load(@game.board)
+  begin
+    @board.buy_card card
+    @board.end_turn
+  rescue => e
+    print e.message
+    @error_message = e.message
+  end
+  @game.board = Marshal.dump @board
+  @game.save
+  redirect "/game/" + params["game_id"]
 end
 
 #TODO:
@@ -43,4 +99,3 @@ end
 #    instead of a "get_more_cash" method, we have one method per card color.  The game knows to call green only on the active player, blue on all players, red only on other players(and to ding the active player in order), and purple on the active player(and to ding the other players).  Also need to add a charge method.
 #9. figure out a reliable way to incorporate improvements
 #    each method should check if the relevant improvement is active.  What to do about rolling one/two dice?  What to do about taking another turn?  What to do about the airport?
-

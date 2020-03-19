@@ -1,2 +1,2 @@
-class Game Sequel::Model
+class Game < Sequel::Model
 end
