@@ -1,5 +1,5 @@
 class Card
-  attr_accessor :name, :description, :cost, :active_numbers, :count
+  attr_accessor :name, :description, :cost, :active_numbers, :count, :value
   def initialize(name, description, cost, active_numbers, value)
     @name = name
     @description = description
@@ -11,5 +11,9 @@ class Card
 
   def == other
     name.to_sym == other.name.to_sym
+  end
+
+  def to_s
+    "name: #{name}.  Cost: $#{cost}"
   end
 end

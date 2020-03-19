@@ -13,8 +13,8 @@ class Player
 
   def initial_hand
     [
-      Card.new(:wheat, "wheat", 3, [1]),
-      Card.new(:bakery, "bakery", 1, [2, 3])
+      Card.new(:wheat, "wheat", 3, [1], 1),
+      Card.new(:bakery, "bakery", 1, [2, 3], 1)
     ]
   end
 
@@ -24,11 +24,11 @@ class Player
     ]
   end
 
-  def get_more_cash total
-    cash += hand.
-              filter{|x| x.active_numbers.include? total}.
+  def activate_green_cards total
+    @cash += hand.
+              select{|x| x.active_numbers.include? total}.
               map{|x| x.value * x.count}.
-              reduce(:+)
+              reduce(0, :+)
   end
 
   def can_roll_two?
@@ -42,12 +42,16 @@ class Player
     else
       hand << card
     end
-    cash -= card.cost
+    @cash -= card.cost
   end
 
   def activate_improvement name
     improvement = improvements.find{|a| a.name == name}
     raise "not enough money" if improvement.cost > cash
     improvement.activate
+  end
+
+  def to_s
+    "#{name}: $#{cash} on hand."
   end
 end
