@@ -72,15 +72,18 @@ end
 
 post '/game/:game_id/buy' do
   card = params["cardname"]
-  print card
   @game = Game[params['game_id'].to_i]
   @board = Marshal.load(@game.board)
-  begin
-    @board.buy_card card
+  if card != 'pass'
+    begin
+      @board.buy_card card
+      @board.end_turn
+    rescue => e
+      print e.message
+      @error_message = e.message
+    end
+  else
     @board.end_turn
-  rescue => e
-    print e.message
-    @error_message = e.message
   end
   @game.board = Marshal.dump @board
   @game.save

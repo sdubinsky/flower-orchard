@@ -22,6 +22,7 @@
         <form id="buycard" action="/game/<%= @game.id %>/buy" method="post">
             <label for="card">Choose Card: </label>
             <select name="cardname" id="cardname">
+                <option id="pass">pass</option>
                 <% @board.field.each do |card| %>
                     <option id="<%=card.name %>"><%=card.name.to_s %></option>
                 <% end %>
