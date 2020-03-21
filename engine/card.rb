@@ -1,13 +1,14 @@
 class Card
   attr_accessor :name, :description, :cost, :active_numbers, :count, :value, :color
-  def initialize(name, description, cost, active_numbers, value, color)
+  def initialize(name)
+    base_card = card_list[name]
     @name = name
-    @description = description
-    @cost = cost
-    @active_numbers = active_numbers
+    @description = base_card[0]
+    @cost = base_card[1]
+    @active_numbers = base_card[2]
+    @value = base_card[3]
+    @color = base_card[4]
     @count = 1
-    @value = value
-    @color = color
   end
 
   def == other
@@ -16,5 +17,16 @@ class Card
 
   def to_s
     "name: #{name}.  Cost: $#{cost}"
+  end
+
+  private
+  def card_list
+    # description, cost, active numbers, value, color
+    {
+      wheat: ["wheat", 1, [1], 1, :blue],
+      bakery: ["bakery", 1, [2,3], 1, :green],
+      sushi_bar: ["sushi bar", 4, [1], 3, :red],
+      stadium: ['stadium', 5, [6], 5, :purple]
+    }
   end
 end

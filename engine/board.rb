@@ -1,3 +1,4 @@
+require 'json'
 require_relative 'card'
 require_relative 'player'
 require_relative 'turn'
@@ -15,8 +16,10 @@ class Board
 
   def new_deck
     cards = []
-    100.downto 0 do |x|
-      cards << Card.new(x.to_s, x.to_s, x, [1,2], x, :blue)
+    10.times do
+      cards << Card.new(:wheat)
+      cards << Card.new(:bakery)
+      cards << Card.new(:sushi_bar)
     end
     cards
   end
@@ -53,6 +56,13 @@ class Board
     dice_total += 2 if current_turn.add_two
     @current_player.activate_green_cards dice_total
     @players.each{|p| p.activate_blue_cards dice_total}
+    @players.each do |p|
+      if p != @current_player
+        fine = p.activate_red_cards dice_total
+        charge = @current_player.pay fine
+        p.cash += charge
+      end
+    end
   end
 
   def end_turn
@@ -93,7 +103,7 @@ class Board
   end
 
   def deal_field
-    while field.size < 10
+    while field.size < 3
       card = deck.pop
       if field.include? card
         field.find{|x| x == card}.count += 1
@@ -105,5 +115,14 @@ class Board
 
   def to_s
     "Players: #{players.map{|s| s.to_s}}<br />Field: #{field.map{|f| f.to_s}}"
+  end
+
+  def to_json
+    {
+      current_player: @current_player.to_s,
+      players: players.map{|a| a.to_s},
+      field: field.map{|f| f.to_s},
+      current_turn: current_turn.to_json
+    }.to_json
   end
 end

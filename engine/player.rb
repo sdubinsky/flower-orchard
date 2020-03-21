@@ -13,8 +13,8 @@ class Player
 
   def initial_hand
     [
-      Card.new(:wheat, "wheat", 3, [1], 1, :blue),
-      Card.new(:bakery, "bakery", 1, [2, 3], 1, :green)
+      Card.new(:wheat),
+      Card.new(:bakery)
     ]
   end
 
@@ -33,9 +33,26 @@ class Player
   end
 
   def activate_red_cards total
-    loss = activate_cards :red, total
-    @cash -= loss
-    loss
+    activate_cards :red, total   
+  end
+
+  def activate_purple_cards total
+    activate_cards :purple, total
+  end
+
+  def pay total
+    '''
+    the game will get how much to charge for the red cards from the other players,
+    then charge the active player that amount
+    '''
+    if @cash <= total
+      to_pay = cash
+      @cash = 0
+    else
+      @cash -= total
+      to_pay = total
+    end
+    to_pay
   end
 
   def activate_cards color, total

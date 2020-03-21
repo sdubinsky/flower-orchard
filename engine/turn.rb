@@ -25,4 +25,13 @@ class Turn
   def repeat?
     @roll_one == @roll_two
   end
+
+  def to_json
+    {
+      roll_one: @roll_one || -1,
+      roll_two: @roll_two || -1,
+      rolled: @rolled,
+      dice_count: @dice_count
+    }
+  end
 end
