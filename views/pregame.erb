@@ -1,0 +1,7 @@
+<form id="addplayer" action="/game/<%= @game.id %>/addplayer" method="post">
+    <label for="playername">New player name:</label>
+    <input type="text" form="addplayer" name="playername" class="formquestion" />
+    <input type="submit" class="submit-button btn" value="Submit" />
+</form>
+<br />
+<a href="/game/<%= @game.id %>/start" >Start Game</a>

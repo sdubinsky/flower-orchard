@@ -1,12 +1,14 @@
 require 'sinatra'
 require 'sequel'
 require './engine/board'
+require './helpers'
 require 'pry'
 
 connstr = ENV['DATABASE_URL'] || "postgres://localhost/machikoro"
 DB = Sequel.connect connstr
 require './models/init'
 
+include Helpers
 enable :sessions
 get '/' do
   erb :index
@@ -43,7 +45,11 @@ end
 get '/game/:game_id/?' do
   @game = Game[params['game_id'].to_i]
   @board = Marshal.load @game.board
-  erb :game
+  if @board.started
+    erb :game
+  else
+    erb :pregame
+  end
 end
 
 get '/game/:game_id/roll/?' do
@@ -70,13 +76,33 @@ post '/game/:game_id/addplayer' do
   redirect "/game/" + params["game_id"]
 end
 
-post '/game/:game_id/buy' do
+post '/game/:game_id/buycard' do
   card = params["cardname"]
   @game = Game[params['game_id'].to_i]
   @board = Marshal.load(@game.board)
   if card != 'pass'
     begin
       @board.buy_card card
+      @board.end_turn
+    rescue => e
+      print e.message
+      @error_message = e.message
+    end
+  else
+    @board.end_turn
+  end
+  @game.board = Marshal.dump @board
+  @game.save
+  redirect "/game/" + params["game_id"]
+end
+
+post '/game/:game_id/buyimprovement' do
+  card = params["cardname"]
+  @game = Game[params['game_id'].to_i]
+  @board = Marshal.load(@game.board)
+  if card != 'pass'
+    begin
+      @board.buy_improvement card
       @board.end_turn
     rescue => e
       print e.message

@@ -1,25 +1,20 @@
-<%= @board %> <br />
-
-<% if !@board.started %>
-    <form id="addplayer" action="/game/<%= @game.id %>/addplayer" method="post">
-        <label for="playername">New player name:</label>
-        <input type="text" form="addplayer" name="playername" class="formquestion" />
-        <input type="submit" class="submit-button btn" value="Submit" />
-    </form>
-
-    <a href="/game/<%= @game.id %>/start" >Start Game</a>
-<% end %>
-<br />
-<% if @board.started %>
-    Current player: <%= @board.current_player.name %><br />
-    <% if !@board.current_turn.rolled %>
+<div id="players">
+</div>
+<div id="current-player">
+    Current player: <div id=" current-player-name"><%= @board.current_player.name %><br /></div>
+</div>
+<div id ="diceroll">
+    <div id="diceone">
         <a href="/game/<%= @game.id %>/roll?total=1">Roll One</a> &nbsp;
-        <% if @board.can_roll_two? %>
-            <a href="/game/<%= @game.id %>/roll?total=2">Roll Two</a>
-        <% end %>
-    <% else %>
+    </div>
+    <div id="dicetwo">
+        <a href="/game/<%= @game.id %>/roll?total=2">Roll Two</a>
+    </div>
+    <div id="diceresults">
         Dice results: <%= @board.dice_display %> <br />
-        <form id="buycard" action="/game/<%= @game.id %>/buy" method="post">
+    </div>
+    <div id="buycards">
+        <form id="buycard" action="/game/<%= @game.id %>/buycard" method="post">
             <label for="card">Choose Card: </label>
             <select name="cardname" id="cardname">
                 <option id="pass">pass</option>
@@ -29,5 +24,21 @@
             </select>
             <input type="submit" class="submit-button" value="Submit" />
         </form>
-    <% end %>
-<% end %>
+    </div>
+    <br />
+    <div id="buy-improvement">
+        <form id="buyimprovement" action="/game/<%=@game.id %>/buyimprovement" method="post">
+            <label for="improvement">Choose Improvement: </label>
+            <select name="improvementname" id="improvementname">
+                <% @board.current_player.improvements.each do |card| %>
+                    <% if !card.active %>
+                        <option id="<%=card.name %>"><%=card.name.to_s %></option>
+                    <% end %>
+                <% end %>
+            </select>
+            <input type="submit" class="submit-button" value="Submit" />
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript" src="/assets/js/application.js"></script>
