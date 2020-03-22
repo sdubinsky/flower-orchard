@@ -46,6 +46,7 @@ module Parser
     else
       raise "invalid buy command"
     end
+    board.end_turn
   end
 
   def self.parse_roll tokens, board

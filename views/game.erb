@@ -1,44 +1,23 @@
+Players:<br />
 <div id="players">
 </div>
 <div id="current-player">
-    Current player: <div id=" current-player-name"><%= @board.current_player.name %><br /></div>
+</div>
+Field:<br />
+<div id="field">
 </div>
 <div id ="diceroll">
     <div id="diceone">
-        <a href="/game/<%= @game.id %>/roll?total=1">Roll One</a> &nbsp;
     </div>
     <div id="dicetwo">
-        <a href="/game/<%= @game.id %>/roll?total=2">Roll Two</a>
     </div>
     <div id="diceresults">
-        Dice results: <%= @board.dice_display %> <br />
     </div>
-    <div id="buycards">
-        <form id="buycard" action="/game/<%= @game.id %>/buycard" method="post">
-            <label for="card">Choose Card: </label>
-            <select name="cardname" id="cardname">
-                <option id="pass">pass</option>
-                <% @board.field.each do |card| %>
-                    <option id="<%=card.name %>"><%=card.name.to_s %></option>
-                <% end %>
-            </select>
-            <input type="submit" class="submit-button" value="Submit" />
-        </form>
-    </div>
-    <br />
-    <div id="buy-improvement">
-        <form id="buyimprovement" action="/game/<%=@game.id %>/buyimprovement" method="post">
-            <label for="improvement">Choose Improvement: </label>
-            <select name="improvementname" id="improvementname">
-                <% @board.current_player.improvements.each do |card| %>
-                    <% if !card.active %>
-                        <option id="<%=card.name %>"><%=card.name.to_s %></option>
-                    <% end %>
-                <% end %>
-            </select>
-            <input type="submit" class="submit-button" value="Submit" />
-        </form>
+    <div id="rolldice">
     </div>
 </div>
-
 <script type="text/javascript" src="/assets/js/application.js"></script>
+<script type="text/javascript">
+    displayBoard(<%=@board.to_json %>);
+</script>
+
