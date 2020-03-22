@@ -44,6 +44,7 @@ var displayBoard = function(board) {
         };
         roll_two.innerHTML = "Roll Two";
         var rolldice = document.querySelector("#rolldice");
+        rolldice.innerHTML = "";
         rolldice.appendChild(roll_one);
         if (board.can_roll_two){
             rolldice.appendChild(roll_two);
