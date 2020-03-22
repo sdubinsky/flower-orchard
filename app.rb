@@ -20,7 +20,6 @@ end
 
 post '/game/create/?' do
   board = Board.new
-  print params
   Game.create(
     name: params['gamename'],
     board: Marshal.dump(board)
