@@ -39,7 +39,7 @@ get '/game/:game_id/start/?' do
   @board.start
   @game.board = Marshal.dump @board
   @game.save
-  erb :game
+  redirect "/game/#{params['game_id']}"
 end
 
 get '/game/:game_id/?' do
@@ -52,16 +52,6 @@ get '/game/:game_id/?' do
   end
 end
 
-get '/game/:game_id/roll/?' do
-  @game = Game[params['game_id'].to_i]
-  @board = Marshal.load @game.board
-  @board.roll_dice params["total"].to_i
-  @board.run_turn
-  @game.board = Marshal.dump @board
-  @game.save  
-  redirect '/game/' + params['game_id']
-end
-
 post '/game/:game_id/addplayer' do
   player = params["playername"]
   @game = Game[params['game_id'].to_i]
@@ -70,46 +60,6 @@ post '/game/:game_id/addplayer' do
     @board.add_player player, 1
   rescue => e
     @error_message = e.message
-  end
-  @game.board = Marshal.dump @board
-  @game.save
-  redirect "/game/" + params["game_id"]
-end
-
-post '/game/:game_id/buycard' do
-  card = params["cardname"]
-  @game = Game[params['game_id'].to_i]
-  @board = Marshal.load(@game.board)
-  if card != 'pass'
-    begin
-      @board.buy_card card
-      @board.end_turn
-    rescue => e
-      print e.message
-      @error_message = e.message
-    end
-  else
-    @board.end_turn
-  end
-  @game.board = Marshal.dump @board
-  @game.save
-  redirect "/game/" + params["game_id"]
-end
-
-post '/game/:game_id/buyimprovement' do
-  card = params["cardname"]
-  @game = Game[params['game_id'].to_i]
-  @board = Marshal.load(@game.board)
-  if card != 'pass'
-    begin
-      @board.buy_improvement card
-      @board.end_turn
-    rescue => e
-      print e.message
-      @error_message = e.message
-    end
-  else
-    @board.end_turn
   end
   @game.board = Marshal.dump @board
   @game.save
