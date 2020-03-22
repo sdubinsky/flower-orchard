@@ -19,6 +19,14 @@ class Card
     "name: #{name}.  Cost: $#{cost}"
   end
 
+  def to_json
+    {
+      name: name,
+      cost: cost,
+      description: to_s      
+    }
+  end
+
   private
   def card_list
     # description, cost, active numbers, value, color

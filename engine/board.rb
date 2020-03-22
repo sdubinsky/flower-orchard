@@ -121,8 +121,9 @@ class Board
     {
       current_player: @current_player.to_s,
       players: players.map{|a| a.to_s},
-      field: field.map{|f| f.to_s},
-      current_turn: current_turn.to_json
+      field: field.map{|f| f.to_json},
+      current_turn: current_turn.to_json,
+      can_roll_two: can_roll_two?
     }.to_json
   end
 end
