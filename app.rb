@@ -77,3 +77,7 @@ end
 #    instead of a "get_more_cash" method, we have one method per card color.  The game knows to call green only on the active player, blue on all players, red only on other players(and to ding the active player in order), and purple on the active player(and to ding the other players).  Also need to add a charge method.
 #9. figure out a reliable way to incorporate improvements
 #    each method should check if the relevant improvement is active.  What to do about rolling one/two dice?  What to do about taking another turn?  What to do about the airport?
+#10. figure out a query syntax for cards that depend on other cards to figure out how much they are.
+#      Something like: if it's a number, just do that.  if it's a dict, search based on the dict, and multiply that total by the value. dict syntax: {search_term: value}.  Examples: {color: red}, {symbol: :factory}, {name: :flower_orchard}
+#11. purple cards.  Probably a special method for each one.  
+end

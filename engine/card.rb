@@ -29,12 +29,33 @@ class Card
 
   private
   def card_list
-    # description, cost, active numbers, value, color
+    # description, cost, active numbers, value, search_dict, color, symbol
     {
-      wheat: ["wheat", 1, [1], 1, :blue],
-      bakery: ["bakery", 1, [2,3], 1, :green],
-      sushi_bar: ["sushi bar", 4, [1], 3, :red],
-      stadium: ['stadium', 5, [6], 5, :purple]
+      ranch: ['ranch', 1, [2], 1, {}, :blue, :cow],
+      cheese_factory: ['cheese factory', 5, [7], 3, {symbol: :cow}, :green, :factory],
+      flower_shop: ['flower shop', 1, [6], 1, {name: :flower_orchard}, :green, :store],
+      convenience_store: ['convenience store', 2, [4], 3, {}, :green, :store],
+      bakery: ["bakery", 1, [2,3], 1, {}, :green, :store],
+      food_warehouse: ["food warehouse", 2, [12, 13], 2, {symbol: :cup}, :green, :factory],
+      mine: ['mine', 6, [9], 5, {}, :blue, :gear],
+      pizza_joint: ['pizza joint', 1, [7], 1, {}, :red, :cup],
+      cafe: ['cafe', 2, [3], 1, {}, :red, :cup],
+      business_center: ['business center', 8, [6], 0, {}, :purple, :tower],
+      tv_station: ['tv station', 7, [6], 5, {}, :purple, :tower],
+      flower_orchard: ['flower orchard', 2, [4], {}, :blue, :crop],
+      publisher: ['publisher', 5, [7], 1, {}, :purple, :tower],
+      stadium: ['stadium', 6, [6], 2, {}, :purple, :tower],
+      family_restaurant: ['family restaurant', 3, [9, 10], {}, :red, :cup],
+      mackerel_boat: ['mackerel boat', 2, [8], 3, {has: :harbor}, :blue, :boat],
+      tax_office: ['tax office', 4, [8, 9], 0, {}, :purple, :tower],
+      hamburger_stand: ['hamburger_stand', 1, [8], 1, {}, :red, :cup],
+      sushi_bar: ["sushi bar", 4, [1], 3, {has: :harbor}, :red, :cup],
+      wheat_field: ["wheat_field", 1, [1], 1, {}, :blue, :crop],
+      tuna_boat: ['tuna boat', 7, [12, 13, 14], 0, {has: :harbor}, :blue, :boat],
+      apple_orchard: ['apple orchard', 3, [10], 3, {}, :blue, :crop],
+      forest: ['forest', 3, [5], 1, {}, :blue, :gear],
+      furniture_factory: ['furniture_factory', 3, [8], 3, {symbol: :gear}, :green, :factory],
+      fruit_market: ['fruit market', 2, [11, 12], 2, {symbol: :crop}, :green, :grenade]
     }
   end
 end
