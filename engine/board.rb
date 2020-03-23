@@ -16,12 +16,10 @@ class Board
 
   def new_deck
     cards = []
-    10.times do
-      cards << Card.new(:wheat)
-      cards << Card.new(:bakery)
-      cards << Card.new(:sushi_bar)
+    5.times do
+      cards += Card.get_cards
     end
-    cards
+    cards.shuffle
   end
 
   def start

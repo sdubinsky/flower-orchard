@@ -13,7 +13,7 @@ class Player
 
   def initial_hand
     [
-      Card.new(:wheat),
+      Card.new(:wheat_field),
       Card.new(:bakery)
     ]
   end

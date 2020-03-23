@@ -17,4 +17,8 @@ class TestPlayer < MiniTest::Test
     @player.activate_green_cards 1
     assert_equal @player.cash, 3
   end
+
+  def test_buy_card
+    
+  end
 end

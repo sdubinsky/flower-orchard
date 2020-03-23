@@ -2,6 +2,7 @@ require 'minitest/autorun'
 require 'rack/test'
 require_relative '../engine/board'
 require_relative '../engine/parser'
+require_relative '../engine/parser'
 
 class TestParser < MiniTest::Test
   include Parser
@@ -18,10 +19,12 @@ class TestParser < MiniTest::Test
     assert @board.current_player
     Parser.parse "roll one", @board
     @board.current_turn.roll_one = 1
+    assert_equal 3, @board.current_player.cash
     Parser.parse "run", @board
     assert_equal @board.current_player.cash, 4
-    Parser.parse "buy card wheat", @board
-    assert_equal @board.current_player.cash, 3
+    @board.field << Card.new(:wheat_field)
+    Parser.parse "buy card wheat_field", @board
+    assert_equal @board.players[-1].cash, 3
     player = @board.current_player
     Parser.parse "end_turn", @board
     refute_equal player, @board.current_player

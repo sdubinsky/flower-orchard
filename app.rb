@@ -80,4 +80,3 @@ end
 #10. figure out a query syntax for cards that depend on other cards to figure out how much they are.
 #      Something like: if it's a number, just do that.  if it's a dict, search based on the dict, and multiply that total by the value. dict syntax: {search_term: value}.  Examples: {color: red}, {symbol: :factory}, {name: :flower_orchard}
 #11. purple cards.  Probably a special method for each one.  
-end

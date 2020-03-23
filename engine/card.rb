@@ -1,14 +1,20 @@
 class Card
-  attr_accessor :name, :description, :cost, :active_numbers, :count, :value, :color
+  attr_accessor :name, :description, :cost, :active_numbers, :count, :value, :color, :symbol, :search_dict
   def initialize(name)
-    base_card = card_list[name]
+    base_card = Card.card_list[name]
     @name = name
     @description = base_card[0]
     @cost = base_card[1]
     @active_numbers = base_card[2]
     @value = base_card[3]
-    @color = base_card[4]
+    @search_dict = base_card[4]
+    @color = base_card[5]
+    @symbol = base_card[6]
     @count = 1
+  end
+
+  def self.get_cards
+    card_list.keys.map{|c| Card.new c}
   end
 
   def == other
@@ -28,7 +34,7 @@ class Card
   end
 
   private
-  def card_list
+  def self.card_list
     # description, cost, active numbers, value, search_dict, color, symbol
     {
       ranch: ['ranch', 1, [2], 1, {}, :blue, :cow],
