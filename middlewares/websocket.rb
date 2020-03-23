@@ -12,7 +12,7 @@ module GameUpdates
 
     def call env
       if Faye::WebSocket.websocket? env
-        ws = Faye::WebSocket.new env
+        ws = Faye::WebSocket.new env, nil, {ping: KEEPALIVE_TIME}
         ws.on :open do |event|
           @clients << ws
         end
