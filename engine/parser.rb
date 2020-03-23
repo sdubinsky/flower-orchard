@@ -2,21 +2,25 @@ module Parser
   def self.parse command, board
     tokens = command.split
     head = tokens.shift
-    case head
-    when 'add'
-      parse_add_player tokens, board
-    when 'start'
-      parse_start tokens, board
-    when "run"
-      parse_run tokens, board
-    when 'end_turn'
-      parse_end_turn tokens, board
-    when 'buy'
-      parse_buy tokens, board
-    when 'roll'
-      parse_roll tokens, board
-    else
-      raise 'invalid command'
+    begin
+      case head
+      when 'add'
+        parse_add_player tokens, board
+      when 'start'
+        parse_start tokens, board
+      when "run"
+        parse_run tokens, board
+      when 'end_turn'
+        parse_end_turn tokens, board
+      when 'buy'
+        parse_buy tokens, board
+      when 'roll'
+        parse_roll tokens, board
+      else
+        raise 'invalid command'
+      end
+    rescue => e
+      board
     end
   end
 
