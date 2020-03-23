@@ -60,6 +60,10 @@ var displayBoard = function(board) {
         var dice_two = document.querySelector("#dicetwo");
         dice_two.innerHTML = "Second die: " + board.current_turn.roll_two;
     }
+    var pass = document.querySelector("#pass");
+    pass.onclick = function (event) {
+        ws.send(JSON.stringify({'game_id': getGameId(), 'message': 'end_turn'}));
+    };
 };
 
 ws.onmessage = function(message) {
