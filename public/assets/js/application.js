@@ -70,6 +70,15 @@ var displayBoard = function(board) {
         var dice_two = document.querySelector("#dicetwo");
         dice_two.innerHTML = "Second die: " + board.current_turn.roll_two;
     }
+
+    if (board.current_turn.rolled && !board.current_turn.paid_out) {
+        var pay_out = document.querySelector("#pay-out");
+        pay_out.innerHTML = "Settle Up";
+        pay_out.onclick = function (event) {
+            ws.send(JSON.stringify({"game_id": getGameId(), 'message': 'run'}));
+            pay_out.innerHTML = "";
+        };
+    }
 };
 
 ws.onmessage = function(message) {
