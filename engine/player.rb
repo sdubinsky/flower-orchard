@@ -8,6 +8,7 @@ class Player
     @id = id
     @cash = 3
     @improvements = initial_improvements
+    @improvements[0].active = true
     @hand = initial_hand
   end
 
@@ -20,7 +21,13 @@ class Player
 
   def initial_improvements
     [
-      Improvement.new(:harbor, 'harbor', 2)
+      Improvement.new(:city_hall, 'city hall', 0),
+      Improvement.new(:harbor, 'harbor', 2),
+      Improvement.new(:train_station, 'train station', 4),
+      Improvement.new(:shopping_mall, 'shopping mall', 10),
+      Improvement.new(:amusement_park, 'amusement park', 16),
+      Improvement.new(:radio_tower, 'radio tower', 22),
+      Improvement.new(:airport, 'airport', 30)
     ]
   end
 
