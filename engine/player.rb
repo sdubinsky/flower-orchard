@@ -59,8 +59,30 @@ class Player
     hand.
       select { |x| x.color == color }.
       select{|x| x.active_numbers.include? total}.
-      map{|x| x.value * x.count}.
+      map{|x| get_card_value(x) * x.count}.
       reduce(0, :+)
+  end
+
+  def get_card_value card
+    card.search_dict.each do |k, v|
+      case k
+      when :has
+        return 0 unless improvements.find{|a| a.name == v}
+      when :name
+        return card.value * cards.
+                              select{|c| c.name == v}.
+                              map{|c| c.count}.
+                              reduce(0, :+)
+      when :symbol
+        return card.value * cards.
+                              select{|c| c.symbol == v}.
+                              map{|c| c.count}.
+                              reduce(0, :+)
+      else
+        puts "invalid search type #{k}"
+      end
+    end
+    card.value
   end
 
   def can_roll_two?
