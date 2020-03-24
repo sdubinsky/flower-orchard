@@ -25,10 +25,14 @@ var displayBoard = function(board) {
         };
         elem.innerHTML = card.description;
         field_div.appendChild(elem);
-        
     });
+    var pay_out = document.querySelector("#pay-out");
+    pay_out.innerHTML = "";
+
     document.querySelector('#current-player').innerHTML = "current player: " + board.current_player;
     if (!board.current_turn.rolled){
+        var pass = document.querySelector("#pass");
+        pass.innerHTML = "";
         var dice_one = document.querySelector("#diceone");
         dice_one.innerHTML = "";
         var dice_two = document.querySelector("#dicetwo");
@@ -55,15 +59,17 @@ var displayBoard = function(board) {
         rolldice.innerHTML = "";
         var dice_one = document.querySelector("#diceone");
         dice_one.innerHTML = "First die: " + board.current_turn.roll_one;
+        var pass = document.querySelector("#pass");
+        pass.innerHTML = "pass";
+        pass.onclick = function (event) {
+        ws.send(JSON.stringify({'game_id': getGameId(), 'message': 'end_turn'}));
+    };
+
     }
     if (board.current_turn.rolled && board.current_turn.dice_count > 1){
         var dice_two = document.querySelector("#dicetwo");
         dice_two.innerHTML = "Second die: " + board.current_turn.roll_two;
     }
-    var pass = document.querySelector("#pass");
-    pass.onclick = function (event) {
-        ws.send(JSON.stringify({'game_id': getGameId(), 'message': 'end_turn'}));
-    };
 };
 
 ws.onmessage = function(message) {
