@@ -71,25 +71,31 @@ class Player
   end
 
   def get_card_value card
+    if improvements.find{|i| i.name == :shopping_mall}.active and
+      (card.symbol == :cup or card.symbol == :shop)
+      value = card.value + 1
+    else
+      value = card.value
+    end
     card.search_dict.each do |k, v|
       case k
       when :has
         return 0 unless improvements.find{|a| a.name == v}
       when :name
-        return card.value * cards.
-                              select{|c| c.name == v}.
-                              map{|c| c.count}.
-                              reduce(0, :+)
+        return value * cards.
+                         select{|c| c.name == v}.
+                         map{|c| c.count}.
+                         reduce(0, :+)
       when :symbol
-        return card.value * cards.
-                              select{|c| c.symbol == v}.
-                              map{|c| c.count}.
-                              reduce(0, :+)
+        return value * cards.
+                         select{|c| c.symbol == v}.
+                         map{|c| c.count}.
+                         reduce(0, :+)
       else
         puts "invalid search type #{k}"
       end
     end
-    card.value
+    value
   end
 
   def can_roll_two?
