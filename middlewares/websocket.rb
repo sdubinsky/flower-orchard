@@ -19,7 +19,7 @@ module GameUpdates
 
         ws.on :message do |event|
           new_board = @app.update_board event.data
-          @clients.each {|c| print c; c.send new_board}
+          @clients.each {|c| c.send new_board}
         end
 
         ws.on :close do |event|

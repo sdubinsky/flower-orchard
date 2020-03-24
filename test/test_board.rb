@@ -18,6 +18,12 @@ class TestBoard < MiniTest::Test
     @board.start
   end
 
+  def test_field
+    @board.start
+    assert_equal 10, @board.field.length
+    
+  end
+
   def test_red_cards
     @board.start
     @board.players[1].hand << Card.new(:sushi_bar)

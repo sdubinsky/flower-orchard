@@ -1,10 +1,11 @@
 class Turn
-  attr_accessor :roll_one, :roll_two, :dice_count, :player, :add_two, :rolled
+  attr_accessor :roll_one, :roll_two, :dice_count, :player, :add_two, :rolled, :paid_out
   def initialize current_player
     @player = current_player
     @dice_count = 1
     @add_two = false
     @rolled = false
+    @paid_out = false
   end
 
   def roll_dice dice_count
@@ -31,6 +32,7 @@ class Turn
       roll_one: @roll_one || -1,
       roll_two: @roll_two || -1,
       rolled: @rolled,
+      paid_out: @paid_out,
       dice_count: @dice_count
     }
   end

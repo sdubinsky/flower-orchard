@@ -19,6 +19,7 @@ class TestParser < MiniTest::Test
     assert @board.current_player
     Parser.parse "roll one", @board
     @board.current_turn.roll_one = 1
+    @board.current_turn.paid_out = false
     assert_equal 3, @board.current_player.cash
     Parser.parse "run", @board
     assert_equal @board.current_player.cash, 4

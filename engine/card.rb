@@ -22,7 +22,7 @@ class Card
   end
 
   def to_s
-    "name: #{name}.  Cost: $#{cost}"
+    "name: #{name}.  Cost: $#{cost}.  Activates: #{active_numbers}"
   end
 
   def to_json

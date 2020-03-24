@@ -37,6 +37,9 @@ class Board
 
   def roll_dice dice_count
     @current_turn.roll_dice dice_count
+    if dice_count == 1
+      run_turn
+    end
   end
 
   def total
@@ -50,6 +53,7 @@ class Board
   end
 
   def run_turn
+    return if @current_turn.paid_out
     dice_total = current_turn.roll_one + current_turn.roll_two
     dice_total += 2 if current_turn.add_two
     @current_player.activate_green_cards dice_total
@@ -61,6 +65,7 @@ class Board
         p.cash += charge
       end
     end
+    @current_turn.paid_out = true
   end
 
   def end_turn
@@ -101,7 +106,7 @@ class Board
   end
 
   def deal_field
-    while field.size < 3
+    while field.size < 10
       card = deck.pop
       if field.include? card
         field.find{|x| x == card}.count += 1
