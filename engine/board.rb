@@ -65,22 +65,30 @@ class Board
         p.cash += charge
       end
     end
+    @current_player.cash += 1 if @current_player.cash == 0 #city hall
     @current_turn.paid_out = true
   end
 
   def end_turn
-    @players << @players.shift
-    @current_player = @players[0]
-    @turn_history << @current_turn
+    if !(current_turn.roll_one == current_turn.roll_two and
+      current_player.can_roll_again?)
+      @players << @players.shift
+      @current_player = @players[0]
+      @turn_history << @current_turn
+    end
     @current_turn = Turn.new @current_player
   end
 
   def can_add_two?
-    @current_turn.can_add_two
+    @current_turn.can_add_two? && @current_player.can_add_two?
   end
 
   def can_roll_two?
     current_player.can_roll_two?
+  end
+
+  def can_roll_again?
+    current_turn.rolls < 2 and current_player.can_roll_again?    
   end
 
   def buy_card card_name
@@ -89,6 +97,7 @@ class Board
     raise "couldn't find that card" if not card
     @current_player.buy_card card
     replace_in_field card
+    @current_turn.bought = true
   end
 
   def activate_improvement improvement_name
@@ -126,7 +135,8 @@ class Board
       players: players.map{|a| a.to_s},
       field: field.map{|f| f.to_json},
       current_turn: current_turn.to_json,
-      can_roll_two: can_roll_two?
+      can_roll_two: can_roll_two?,
+      can_roll_again: can_roll_again?
     }.to_json
   end
 end

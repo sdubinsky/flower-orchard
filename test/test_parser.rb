@@ -1,3 +1,4 @@
+require 'pry'
 require 'minitest/autorun'
 require 'rack/test'
 require_relative '../engine/board'
@@ -22,7 +23,7 @@ class TestParser < MiniTest::Test
     @board.current_turn.paid_out = false
     assert_equal 3, @board.current_player.cash
     Parser.parse "run", @board
-    assert_equal @board.current_player.cash, 4
+    assert_equal 4, @board.current_player.cash
     @board.field << Card.new(:wheat_field)
     Parser.parse "buy card wheat_field", @board
     assert_equal @board.players[-1].cash, 3

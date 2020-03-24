@@ -30,13 +30,15 @@ var displayBoard = function(board) {
     pay_out.innerHTML = "";
 
     document.querySelector('#current-player').innerHTML = "current player: " + board.current_player;
-    if (!board.current_turn.rolled){
+    if (board.current_turn.rolls == 0){
         var pass = document.querySelector("#pass");
         pass.innerHTML = "";
         var dice_one = document.querySelector("#diceone");
         dice_one.innerHTML = "";
         var dice_two = document.querySelector("#dicetwo");
         dice_two.innerHTML = "";
+    }
+    if (board.current_turn.rolls == 0 || board.can_roll_again) {
         var roll_one = document.createElement("div");
         roll_one.onclick = function (event) {
             ws.send(JSON.stringify({'game_id': getGameId(), 'message': 'roll one'}));
@@ -54,9 +56,7 @@ var displayBoard = function(board) {
             rolldice.appendChild(roll_two);
         }
     }
-    if (board.current_turn.rolled){
-        var rolldice = document.querySelector("#rolldice");
-        rolldice.innerHTML = "";
+    if (board.current_turn.rolls > 0){
         var dice_one = document.querySelector("#diceone");
         dice_one.innerHTML = "First die: " + board.current_turn.roll_one;
         var pass = document.querySelector("#pass");
@@ -64,14 +64,18 @@ var displayBoard = function(board) {
         pass.onclick = function (event) {
         ws.send(JSON.stringify({'game_id': getGameId(), 'message': 'end_turn'}));
     };
-
+        
     }
-    if (board.current_turn.rolled && board.current_turn.dice_count > 1){
+    if (board.current_turn.rolls > 0 && !board.can_roll_again){
+        var rolldice = document.querySelector('#rolldice');
+        rolldice.innerHTML = "";
+    }
+    if (board.current_turn.rolls > 0 && board.current_turn.dice_count > 1){
         var dice_two = document.querySelector("#dicetwo");
         dice_two.innerHTML = "Second die: " + board.current_turn.roll_two;
     }
 
-    if (board.current_turn.rolled && !board.current_turn.paid_out) {
+    if (board.current_turn.rolls > 0 && !board.current_turn.paid_out) {
         var pay_out = document.querySelector("#pay-out");
         pay_out.innerHTML = "Settle Up";
         pay_out.onclick = function (event) {

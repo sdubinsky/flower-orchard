@@ -99,7 +99,20 @@ class Player
   end
 
   def can_roll_two?
+    improvements.find{|a| a.name == :train_station}.active
+  end
+
+  def can_add_two?
     improvements.find{|a| a.name == :harbor}.active
+  end
+
+  def can_roll_again?
+    improvements.find{|a| a.name == :amusement_park}.active
+  end
+
+  def gets_free_money?
+    improvements.find{|a| a.name == :airport}.active
+    
   end
 
   def buy_card card
