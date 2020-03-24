@@ -24,7 +24,7 @@ post '/game/create/?' do
     name: params['gamename'],
     board: Marshal.dump(board)
   )
-  redirect "/"
+  redirect "/games"
 end
 
 get '/games/?' do
@@ -78,5 +78,5 @@ end
 #9. figure out a reliable way to incorporate improvements
 #    each method should check if the relevant improvement is active.  What to do about rolling one/two dice?  What to do about taking another turn?  What to do about the airport?
 #10. figure out a query syntax for cards that depend on other cards to figure out how much they are.
-#      Something like: if it's a number, just do that.  if it's a dict, search based on the dict, and multiply that total by the value. dict syntax: {search_term: value}.  Examples: {color: red}, {symbol: :factory}, {name: :flower_orchard}
+#      Something like: if it's an empty dict, just do that.  if it's a dict, search based on the dict, and multiply that total by the value. dict syntax: {search_term: value}.  Examples: {color: red}, {symbol: :factory}, {name: :flower_orchard}
 #11. purple cards.  Probably a special method for each one.  
