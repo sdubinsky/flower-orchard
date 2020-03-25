@@ -38,9 +38,9 @@ var buildPlayerElem = function(player, can_buy){
             imp_elem.onclick = function (event) {
                 ws.send(JSON.stringify({'game_id': getGameId(), 'message': 'buy improvement ' + improvement.name}))
             };
+        }
         imp_elem.className += "player-improvement";
         imp_elem.innerHTML = "name: " + improvement.name + ".  cost: " + improvement.cost + ".  active: " + improvement.active;
-        }
         player_elem.appendChild(imp_elem);
     });
     return player_elem;
