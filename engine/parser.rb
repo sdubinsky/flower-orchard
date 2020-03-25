@@ -53,7 +53,7 @@ module Parser
     when 'card'
       board.buy_card tokens[-1]
     when 'improvement'
-      board.buy_improvement tokens[-1]
+      board.activate_improvement tokens[-1]
     else
       raise "invalid buy command"
     end

@@ -126,10 +126,11 @@ class Player
   end
 
   def activate_improvement name
-    improvement = improvements.find{|a| a.name == name}
+    improvement = improvements.find{|a| a.name == name.to_sym}
+    raise "invalid improvement name" if not improvement
     raise "not enough money" if improvement.cost > cash
     raise "already activated" if improvement.active
-    improvement.activate
+    improvement.active = true
   end
 
   def to_s
