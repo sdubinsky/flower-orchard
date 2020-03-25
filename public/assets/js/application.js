@@ -28,13 +28,14 @@ var buildPlayerElem = function(player, can_buy){
     });
     player_elem.innerHTML += "Improvements"
     player.improvements.forEach(function(improvement) {
-        let imp_elem = document.createElement("button");
-        imp_elem.className += "player-improvement";
-        imp_elem.innerHTML = "name: " + improvement.name + ".  cost: " + improvement.cost + ".  active: " + improvement.active;
+        let imp_elem = document.createElement("div");
         if (can_buy){
+            imp_elem = document.createElement("button");
             imp_elem.onclick = function (event) {
                 ws.send(JSON.stringify({'game_id': getGameId(), 'message': 'buy improvement ' + improvement.name}))
             };
+        imp_elem.className += "player-improvement";
+        imp_elem.innerHTML = "name: " + improvement.name + ".  cost: " + improvement.cost + ".  active: " + improvement.active;
         }
         player_elem.appendChild(imp_elem);
     });
@@ -51,8 +52,9 @@ var displayBoard = function(board) {
     var field_div = document.querySelector("#field");
     field_div.innerHTML = "";
     board.field.forEach(function(card){
-        let elem = document.createElement("button");
+        let elem = document.createElement("div");
         if (board.current_turn.rolls > 0){
+            elem = document.createElement("button");
             elem.onclick = function (event){
                 ws.send(JSON.stringify({'game_id': getGameId(), 'message': "buy card " + card.name}));
             };

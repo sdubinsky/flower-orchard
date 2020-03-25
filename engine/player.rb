@@ -115,7 +115,8 @@ class Player
     
   end
 
-  def buy_card card
+  def buy_card card_name
+    card = Card.new card_name
     raise "not enough money" if card.cost > @cash
     if hand.include? card
       hand.find{|x| x == card}.count += 1
