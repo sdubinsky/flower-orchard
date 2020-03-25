@@ -131,6 +131,7 @@ class Player
     raise "not enough money" if improvement.cost > cash
     raise "already activated" if improvement.active
     improvement.active = true
+    @cash -= improvement.cost
   end
 
   def to_s

@@ -96,7 +96,7 @@ class Board
     raise "please start game" if not @started
     card = field.find{|x| x.name.to_sym == card_name.to_sym}
     raise "couldn't find that card" if not card
-    @current_player.buy_card card
+    @current_player.buy_card card.name
     replace_in_field card
     @current_turn.bought = true
   end
