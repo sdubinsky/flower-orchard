@@ -76,12 +76,6 @@ post '/game/:game_id/addplayer' do
   redirect "/game/" + params["game_id"]
 end
 
-get "/assets/js/application.js" do
-  content_type :js
-  @scheme = ENV['RACK_ENV'] == "production" ? "wss://" : "ws://"
-  erb :"application.js"
-end
-
 #TODO:
 #1. add Player model/migration
 #2. add tests for adding players to a game

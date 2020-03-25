@@ -1,4 +1,4 @@
-var scheme = "<%= scheme %>://";
+var scheme = "wss://";
 var uri = scheme + window.document.location.host + window.document.location.pathname + "/";
 var ws = new WebSocket(uri);
 
@@ -21,7 +21,7 @@ var buildPlayerElem = function(player, can_buy){
     player_elem.appendChild(cash_elem);
     player_elem.innerHTML += "Cards:"
     player.hand.forEach(function(card){
-        let card_elem = document.createElement("div");
+        let card_elem = document.createElement("button");
         card_elem.className += "player-card";
         card_elem.innerHTML = card.count + " " + card.name + ".  Activates on: " + card.active_numbers;
         player_elem.appendChild(card_elem);
@@ -34,9 +34,9 @@ var buildPlayerElem = function(player, can_buy){
             imp_elem.onclick = function (event) {
                 ws.send(JSON.stringify({'game_id': getGameId(), 'message': 'buy improvement ' + improvement.name}))
             };
-        }
         imp_elem.className += "player-improvement";
         imp_elem.innerHTML = "name: " + improvement.name + ".  cost: " + improvement.cost + ".  active: " + improvement.active;
+        }
         player_elem.appendChild(imp_elem);
     });
     return player_elem;
