@@ -22,7 +22,7 @@ class Card
   end
 
   def to_s
-    "name: #{name}.  Cost: $#{cost}.  Activates: #{active_numbers}"
+    "#{count} #{name}.  Cost: $#{cost}.  Activates: #{active_numbers}"
   end
 
   def to_json
@@ -30,7 +30,8 @@ class Card
       name: name,
       cost: cost,
       description: to_s,
-      active_numbers: active_numbers
+      active_numbers: active_numbers,
+      count: count
     }
   end
 
