@@ -1,7 +1,7 @@
 require 'logger'
 module Parser
   def self.parse command, board
-    logging.info "received command: #{command}"
+    logger.info "received command: #{command}"
     tokens = command.split
     head = tokens.shift
     begin
@@ -19,10 +19,10 @@ module Parser
       when 'roll'
         parse_roll tokens, board
       else
-        logging.info "invalid command #{command}"
+        logger.info "invalid command #{command}"
       end
     rescue => e
-      logging.info "error: #{e.message}"
+      logger.info "error: #{e.message}"
       board
     end
   end

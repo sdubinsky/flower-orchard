@@ -42,7 +42,7 @@ get '/games/?' do
 end
 
 get '/game/:game_id/start/?' do
-  logging.info "starting game #{params['game_id']}"
+  logger.info "starting game #{params['game_id']}"
   @game = Game[params['game_id'].to_i]
   @board = Marshal.load @game.board
   @board.start
@@ -62,7 +62,7 @@ get '/game/:game_id/?' do
 end
 
 post '/game/:game_id/addplayer' do
-  logging.info "addint player #{params["playername"]}"
+  logger.info "addint player #{params["playername"]}"
   player = params["playername"]
   @game = Game[params['game_id'].to_i]
   @board = Marshal.load(@game.board)
