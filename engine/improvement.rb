@@ -10,4 +10,12 @@ class Improvement
   def == other
     name.to_sym == other.to_sym
   end
+
+  def to_json
+    {
+      name: name,
+      cost: cost,
+      active: active
+    }
+  end
 end

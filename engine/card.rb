@@ -29,7 +29,8 @@ class Card
     {
       name: name,
       cost: cost,
-      description: to_s      
+      description: to_s,
+      active_numbers: active_numbers
     }
   end
 

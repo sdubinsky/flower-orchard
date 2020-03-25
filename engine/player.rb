@@ -134,4 +134,13 @@ class Player
   def to_s
     "#{name}: $#{cash} on hand."
   end
+
+  def to_json
+    {
+      name: @name,
+      hand: hand.map{|h| h.to_json},
+      improvements: improvements.map{|h| h.to_json},
+      cash: cash
+    }
+  end
 end
