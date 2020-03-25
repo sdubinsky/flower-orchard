@@ -1,4 +1,8 @@
-var scheme = "wss://";
+if (window.document.location.hostname === "localhost") {
+    var scheme = "ws://";
+}else{
+    var scheme = "wss://";
+}
 var uri = scheme + window.document.location.host + window.document.location.pathname + "/";
 var ws = new WebSocket(uri);
 
