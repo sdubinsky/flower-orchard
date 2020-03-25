@@ -1,0 +1,17 @@
+#players {
+    display: flex;
+    flex-direction: row;
+    margin: 0.1em;
+}
+
+.player-div {
+    margin: 0.2em;
+}
+
+.player-card {
+    margin-left: 1em;
+}
+
+.player-improvement {
+    margin-left: 1em;
+}
