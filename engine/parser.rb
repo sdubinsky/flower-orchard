@@ -1,7 +1,11 @@
 require 'logger'
+
 module Parser
   def self.parse command, board
+    logger = Logger.new $stdout
+    logger.level = Logger::INFO
     logger.info "received command: #{command}"
+    board.commands.append(command)
     tokens = command.split
     head = tokens.shift
     begin

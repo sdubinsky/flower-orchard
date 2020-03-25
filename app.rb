@@ -62,7 +62,7 @@ get '/game/:game_id/?' do
 end
 
 post '/game/:game_id/addplayer' do
-  logger.info "addint player #{params["playername"]}"
+  logger.info "adding player #{params["playername"]}"
   player = params["playername"]
   @game = Game[params['game_id'].to_i]
   @board = Marshal.load(@game.board)
