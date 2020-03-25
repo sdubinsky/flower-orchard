@@ -8,12 +8,35 @@ var getGameId = function(){
     return game_id;
 };
 
+var buildPlayerElem = function(player){
+    let player_elem = document.createElement("div");
+    player_elem.className += "player-div";
+    let name_elem = document.createElement("div");
+    name_elem.className += "player-name";
+    name_elem.innerHTML = "name: " + player.name;
+    player_elem.appendChild(name_elem);
+    player_elem.innerHTML += "Cards:"
+    player.hand.forEach(function(card){
+        let card_elem = document.createElement("div");
+        card_elem.className += "player-card";
+        card_elem.innerHTML = "name: " + card.name + ".  Activates on: " + card.active_numbers;
+        player_elem.appendChild(card_elem);
+    });
+    player_elem.innerHTML += "Improvements"
+    player.improvements.forEach(function(improvement) {
+        let imp_elem = document.createElement("div");
+        imp_elem.className += "player-improvement";
+        imp_elem.innerHTML = "name: " + improvement.name + ".  cost: " + improvement.cost + ".  active: " + improvement.active;
+        player_elem.appendChild(imp_elem);
+    });
+    return player_elem;
+};
+
 var displayBoard = function(board) {
     var players_div = document.querySelector('#players');
     players_div.innerHTML = "";
     board.players.forEach(function(player){
-        let elem = document.createElement("div");
-        elem.innerHTML = player;
+        let elem = buildPlayerElem(player);
         players_div.appendChild(elem);
     });
     var field_div = document.querySelector("#field");

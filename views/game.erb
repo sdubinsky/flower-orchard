@@ -1,27 +1,36 @@
-Players:<br />
-<div id="players">
-</div>
-<div id="current-player">
-</div>
-Field:<br />
-<div id="field">
-</div>
-<div id="pass">
-    pass
-</div>
-<div id="pay-out">
-</div>
-<div id ="diceroll">
-    <div id="diceone">
-    </div>
-    <div id="dicetwo">
-    </div>
-    <div id="diceresults">
-    </div>
-    <div id="rolldice">
-    </div>
-</div>
-<script type="text/javascript" src="/assets/js/application.js"></script>
-<script type="text/javascript">
-    displayBoard(<%=@board.to_json %>);
-</script>
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Machi Koro</title>
+        <link rel="stylesheet" type="text/css" href="<%=url("/assets/css/game.css") %>" />
+    </head>
+    <body>
+        Players:<br />
+        <div id="players">
+        </div>
+        <div id="current-player">
+        </div>
+        Field:<br />
+        <div id="field">
+        </div>
+        <div id="pass">
+            pass
+        </div>
+        <div id="pay-out">
+        </div>
+        <div id ="diceroll">
+            <div id="diceone">
+            </div>
+            <div id="dicetwo">
+            </div>
+            <div id="diceresults">
+            </div>
+            <div id="rolldice">
+            </div>
+        </div>
+        <script type="text/javascript" src="/assets/js/application.js"></script>
+        <script type="text/javascript">
+         displayBoard(<%=@board.to_json %>);
+        </script>
+    </body>
+</html>
