@@ -8,18 +8,22 @@ var getGameId = function(){
     return game_id;
 };
 
-var buildPlayerElem = function(player){
+var buildPlayerElem = function(player, can_buy){
     let player_elem = document.createElement("div");
     player_elem.className += "player-div";
     let name_elem = document.createElement("div");
     name_elem.className += "player-name";
     name_elem.innerHTML = "name: " + player.name;
     player_elem.appendChild(name_elem);
+    let cash_elem = document.createElement("div");
+    cash_elem.className += "player-cash";
+    cash_elem.innerHTML = "cash: " + player.cash;
+    player_elem.appendChild(cash_elem);
     player_elem.innerHTML += "Cards:"
     player.hand.forEach(function(card){
         let card_elem = document.createElement("div");
         card_elem.className += "player-card";
-        card_elem.innerHTML = "name: " + card.name + ".  Activates on: " + card.active_numbers;
+        card_elem.innerHTML = card.count + " " + card.name + ".  Activates on: " + card.active_numbers;
         player_elem.appendChild(card_elem);
     });
     player_elem.innerHTML += "Improvements"
@@ -27,6 +31,11 @@ var buildPlayerElem = function(player){
         let imp_elem = document.createElement("div");
         imp_elem.className += "player-improvement";
         imp_elem.innerHTML = "name: " + improvement.name + ".  cost: " + improvement.cost + ".  active: " + improvement.active;
+        if (can_buy){
+            imp_elem.onclick = function (event) {
+                ws.send(JSON.stringify({'game_id': getGameId(), 'message': 'buy improvement ' + improvement.name}))
+            };
+        }
         player_elem.appendChild(imp_elem);
     });
     return player_elem;
@@ -36,16 +45,18 @@ var displayBoard = function(board) {
     var players_div = document.querySelector('#players');
     players_div.innerHTML = "";
     board.players.forEach(function(player){
-        let elem = buildPlayerElem(player);
+        let elem = buildPlayerElem(player, (board.current_turn.rolls > 0));
         players_div.appendChild(elem);
     });
     var field_div = document.querySelector("#field");
     field_div.innerHTML = "";
     board.field.forEach(function(card){
         let elem = document.createElement("div");
-        elem.onclick = function (event){
-            ws.send(JSON.stringify({'game_id': getGameId(), 'message': "buy card " + card.name}));
-        };
+        if (board.current_turn.rolls > 0){
+            elem.onclick = function (event){
+                ws.send(JSON.stringify({'game_id': getGameId(), 'message': "buy card " + card.name}));
+            };
+        }
         elem.innerHTML = card.description;
         field_div.appendChild(elem);
     });
