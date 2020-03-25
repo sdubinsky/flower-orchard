@@ -4,9 +4,10 @@ require_relative 'player'
 require_relative 'turn'
 
 class Board
-  attr_accessor :players, :deck, :field, :started, :turnHistory, :current_player, :current_turn
+  attr_accessor :players, :deck, :field, :started, :turnHistory, :current_player, :current_turn, :commands
   def initialize
     @players = []
+    @commands = []
     @deck = new_deck
     @field = []
     @started = false
