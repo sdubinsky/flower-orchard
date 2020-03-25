@@ -23,25 +23,28 @@ var buildPlayerElem = function(player, can_buy){
     cash_elem.className += "player-cash";
     cash_elem.innerHTML = "cash: " + player.cash;
     player_elem.appendChild(cash_elem);
-    player_elem.innerHTML += "Cards:"
+    player_elem.innerHTML += "Cards:<br />"
     player.hand.forEach(function(card){
-        let card_elem = document.createElement("button");
+        let card_elem = document.createElement("div");
         card_elem.className += "player-card";
         card_elem.innerHTML = card.count + " " + card.name + ".  Activates on: " + card.active_numbers;
         player_elem.appendChild(card_elem);
     });
-    player_elem.innerHTML += "Improvements"
+    player_elem.innerHTML += "Improvements<br />"
     player.improvements.forEach(function(improvement) {
         let imp_elem = document.createElement("div");
         if (can_buy){
             imp_elem = document.createElement("button");
             imp_elem.onclick = function (event) {
-                ws.send(JSON.stringify({'game_id': getGameId(), 'message': 'buy improvement ' + improvement.name}))
+                ws.send(JSON.stringify({'game_id': getGameId(), 'message': 'buy improvement ' + improvement.name}));
             };
+            imp_elem.appendChild(document.createElement("br"));
+
         }
         imp_elem.className += "player-improvement";
         imp_elem.innerHTML = "name: " + improvement.name + ".  cost: " + improvement.cost + ".  active: " + improvement.active;
         player_elem.appendChild(imp_elem);
+        player_elem.appendChild(document.createElement("br"));
     });
     return player_elem;
 };
@@ -65,26 +68,33 @@ var displayBoard = function(board) {
         }
         elem.innerHTML = card.description;
         field_div.appendChild(elem);
+        field_div.appendChild(document.createElement("br"));
     });
+    if (board.current_turn.rolls > 0){
+        pass = document.createElement("button");
+        pass.innerHTML = "pass";
+        pass.onclick = function (event) {
+            ws.send(JSON.stringify({'game_id': getGameId(), 'message': 'end_turn'}));
+        };
+        field_div.appendChild(pass);
+    }
     var pay_out = document.querySelector("#pay-out");
     pay_out.innerHTML = "";
 
     document.querySelector('#current-player').innerHTML = "current player: " + board.current_player;
     if (board.current_turn.rolls == 0){
-        var pass = document.querySelector("#pass");
-        pass.innerHTML = "";
         var dice_one = document.querySelector("#diceone");
         dice_one.innerHTML = "";
         var dice_two = document.querySelector("#dicetwo");
         dice_two.innerHTML = "";
     }
     if (board.current_turn.rolls == 0 || board.can_roll_again) {
-        var roll_one = document.createElement("div");
+        var roll_one = document.createElement("button");
         roll_one.onclick = function (event) {
             ws.send(JSON.stringify({'game_id': getGameId(), 'message': 'roll one'}));
         };
         roll_one.innerHTML = "Roll One";
-        var roll_two = document.createElement("div");
+        var roll_two = document.createElement("button");
         roll_two.onclick = function (event) {
             ws.send(JSON.stringify({'game_id': getGameId(), 'message': 'roll two'}));
         };
@@ -98,13 +108,7 @@ var displayBoard = function(board) {
     }
     if (board.current_turn.rolls > 0){
         var dice_one = document.querySelector("#diceone");
-        dice_one.innerHTML = "First die: " + board.current_turn.roll_one;
-        var pass = document.querySelector("#pass");
-        pass.innerHTML = "pass";
-        pass.onclick = function (event) {
-        ws.send(JSON.stringify({'game_id': getGameId(), 'message': 'end_turn'}));
-    };
-        
+        dice_one.innerHTML = "First die: " + board.current_turn.roll_one;        
     }
     if (board.current_turn.rolls > 0 && !board.can_roll_again){
         var rolldice = document.querySelector('#rolldice');
