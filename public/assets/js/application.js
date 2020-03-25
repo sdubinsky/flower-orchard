@@ -21,14 +21,14 @@ var buildPlayerElem = function(player, can_buy){
     player_elem.appendChild(cash_elem);
     player_elem.innerHTML += "Cards:"
     player.hand.forEach(function(card){
-        let card_elem = document.createElement("div");
+        let card_elem = document.createElement("button");
         card_elem.className += "player-card";
         card_elem.innerHTML = card.count + " " + card.name + ".  Activates on: " + card.active_numbers;
         player_elem.appendChild(card_elem);
     });
     player_elem.innerHTML += "Improvements"
     player.improvements.forEach(function(improvement) {
-        let imp_elem = document.createElement("div");
+        let imp_elem = document.createElement("button");
         imp_elem.className += "player-improvement";
         imp_elem.innerHTML = "name: " + improvement.name + ".  cost: " + improvement.cost + ".  active: " + improvement.active;
         if (can_buy){
@@ -51,7 +51,7 @@ var displayBoard = function(board) {
     var field_div = document.querySelector("#field");
     field_div.innerHTML = "";
     board.field.forEach(function(card){
-        let elem = document.createElement("div");
+        let elem = document.createElement("button");
         if (board.current_turn.rolls > 0){
             elem.onclick = function (event){
                 ws.send(JSON.stringify({'game_id': getGameId(), 'message': "buy card " + card.name}));
