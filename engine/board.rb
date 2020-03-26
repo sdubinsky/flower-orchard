@@ -4,7 +4,7 @@ require_relative 'player'
 require_relative 'turn'
 
 class Board
-  attr_accessor :players, :deck, :field, :started, :turnHistory, :current_player, :current_turn, :commands
+  attr_accessor :players, :deck, :field, :started, :turnHistory, :current_turn, :commands
   def initialize
     @players = []
     @commands = []
@@ -26,8 +26,12 @@ class Board
   def start
     @started = true
     deal_field
-    @current_player = players[0]
-    @current_turn = Turn.new @current_player
+    @current_player = 0
+    @current_turn = Turn.new current_player
+  end
+
+  def current_player
+    @players[@current_player]
   end
 
   def add_player name, id
@@ -57,31 +61,30 @@ class Board
     return if @current_turn.paid_out
     dice_total = current_turn.roll_one + current_turn.roll_two
     dice_total += 2 if current_turn.add_two
-    @current_player.activate_green_cards dice_total
+    current_player.activate_green_cards dice_total
     @players.each{|p| p.activate_blue_cards dice_total}
     @players.each do |p|
-      if p != @current_player
+      if p != current_player
         fine = p.activate_red_cards dice_total
-        charge = @current_player.pay fine
+        charge = current_player.pay fine
         p.cash += charge
       end
     end
-    @current_player.cash += 1 if @current_player.cash == 0 #city hall
+    current_player.cash += 1 if current_player.cash == 0 #city hall
     @current_turn.paid_out = true
   end
 
   def end_turn
     if !(current_turn.roll_one == current_turn.roll_two and
       current_player.can_roll_again?)
-      @players << @players.shift
-      @current_player = @players[0]
+      @current_player = (@current_player + 1) % @players.length
       @turn_history << @current_turn
     end
-    @current_turn = Turn.new @current_player
+    @current_turn = Turn.new current_player
   end
 
   def can_add_two?
-    @current_turn.can_add_two? && @current_player.can_add_two?
+    @current_turn.can_add_two? && current_player.can_add_two?
   end
 
   def can_roll_two?
@@ -96,14 +99,14 @@ class Board
     raise "please start game" if not @started
     card = field.find{|x| x.name.to_sym == card_name.to_sym}
     raise "couldn't find that card" if not card
-    @current_player.buy_card card.name
+    current_player.buy_card card.name
     replace_in_field card
     @current_turn.bought = true
   end
 
   def activate_improvement improvement_name
     raise "please start game" if not @started
-    @current_player.activate_improvement improvement_name
+    current_player.activate_improvement improvement_name
   end
 
   def replace_in_field card
@@ -132,7 +135,7 @@ class Board
 
   def to_json
     {
-      current_player: @current_player.name,
+      current_player: current_player,
       players: players.map{|a| a.to_json},
       field: field.map{|f| f.to_json},
       current_turn: current_turn.to_json,

@@ -21,12 +21,12 @@ class TestParser < MiniTest::Test
     Parser.parse "roll one", @board
     @board.current_turn.roll_one = 1
     @board.current_turn.paid_out = false
-    assert_equal 3, @board.current_player.cash
+    @board.current_player.cash = 3
     Parser.parse "run", @board
     assert_equal 4, @board.current_player.cash
     @board.field << Card.new(:wheat_field)
     Parser.parse "buy card wheat_field", @board
-    assert_equal @board.players[-1].cash, 3
+    assert_equal @board.players[0].cash, 3
     player = @board.current_player
     Parser.parse "end_turn", @board
     refute_equal player, @board.current_player
