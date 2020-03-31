@@ -42,7 +42,7 @@ class Board
 
   def roll_dice dice_count
     @current_turn.roll_dice dice_count
-    if dice_count == 1
+    if dice_count == 1 or (!can_add_two? and !can_roll_again?)
       run_turn
     end
   end
