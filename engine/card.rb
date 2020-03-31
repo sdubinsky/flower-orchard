@@ -35,6 +35,10 @@ class Card
     }
   end
 
+  def self.card_list
+    self.regular_card_list.merge self.purple_card_list
+  end
+
   def self.regular_card_list
     # description, cost, active numbers, value, search_dict, color, symbol
     {
