@@ -135,7 +135,7 @@ class Board
 
   def to_json
     {
-      current_player: current_player,
+      current_player: current_player.to_json,
       players: players.map{|a| a.to_json},
       field: field.map{|f| f.to_json},
       current_turn: current_turn.to_json,
