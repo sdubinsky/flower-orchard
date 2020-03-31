@@ -19,3 +19,8 @@
 .buy-button {
     margin-left: 0.5em;
 }
+
+.roll-button {
+    width: 6em;
+    height: 6em;
+}

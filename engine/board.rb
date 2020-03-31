@@ -84,7 +84,7 @@ class Board
   end
 
   def can_add_two?
-    @current_turn.can_add_two? && current_player.can_add_two?
+    @current_turn.can_add_two? and current_player.can_add_two? and not @current_turn.add_two
   end
 
   def can_roll_two?

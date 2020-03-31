@@ -96,11 +96,13 @@ var displayBoard = function(board) {
     }
     if (board.current_turn.rolls == 0 || board.can_roll_again) {
         var roll_one = document.createElement("button");
+        roll_one.className = "roll-button";
         roll_one.onclick = function (event) {
             ws.send(JSON.stringify({'game_id': getGameId(), 'message': 'roll one'}));
         };
         roll_one.innerHTML = "Roll One";
         var roll_two = document.createElement("button");
+        roll_two.className = "roll-button";
         roll_two.onclick = function (event) {
             ws.send(JSON.stringify({'game_id': getGameId(), 'message': 'roll two'}));
         };
@@ -128,6 +130,7 @@ var displayBoard = function(board) {
     if (board.current_turn.rolls > 0 && !board.current_turn.paid_out) {
         var pay_out = document.querySelector("#pay-out");
         pay_out.innerHTML = "Settle Up";
+        var payout_button = document.createElement("button");
         pay_out.onclick = function (event) {
             ws.send(JSON.stringify({"game_id": getGameId(), 'message': 'run'}));
             pay_out.innerHTML = "";
