@@ -33,17 +33,19 @@ var buildPlayerElem = function(player, can_buy){
     player_elem.innerHTML += "Improvements<br />"
     player.improvements.forEach(function(improvement) {
         let imp_elem = document.createElement("div");
-        if (can_buy){
-            imp_elem = document.createElement("button");
-            imp_elem.onclick = function (event) {
-                ws.send(JSON.stringify({'game_id': getGameId(), 'message': 'buy improvement ' + improvement.name}));
-            };
-            imp_elem.appendChild(document.createElement("br"));
-
-        }
         imp_elem.className += "player-improvement";
         imp_elem.innerHTML = "name: " + improvement.name + ".  cost: " + improvement.cost + ".  active: " + improvement.active;
         player_elem.appendChild(imp_elem);
+        if (can_buy && !improvement.active){
+            buy = document.createElement("button");
+            buy.className = "buy-button";
+            buy.onclick = function (event) {
+                ws.send(JSON.stringify({'game_id': getGameId(), 'message': 'buy improvement ' + improvement.name}));
+                
+            };
+            buy.innerHTML = "Activate";
+            imp_elem.appendChild(buy);
+        }
         player_elem.appendChild(document.createElement("br"));
     });
     return player_elem;
@@ -53,21 +55,25 @@ var displayBoard = function(board) {
     var players_div = document.querySelector('#players');
     players_div.innerHTML = "";
     board.players.forEach(function(player){
-        let elem = buildPlayerElem(player, (board.current_turn.rolls > 0));
+        let can_buy = (board.current_turn.rolls > 0) && (player.name == board.current_player.name);
+        let elem = buildPlayerElem(player, can_buy);
         players_div.appendChild(elem);
     });
     var field_div = document.querySelector("#field");
     field_div.innerHTML = "";
     board.field.forEach(function(card){
         let elem = document.createElement("div");
+        elem.innerHTML = card.description;
+        field_div.appendChild(elem);
         if (board.current_turn.rolls > 0){
-            elem = document.createElement("button");
+            let buyme = document.createElement("button");
+            buyme.innerHTML = "Buy";
+            buyme.className += "buy-button";
             elem.onclick = function (event){
                 ws.send(JSON.stringify({'game_id': getGameId(), 'message': "buy card " + card.name}));
             };
+            elem.appendChild(buyme);
         }
-        elem.innerHTML = card.description;
-        field_div.appendChild(elem);
         field_div.appendChild(document.createElement("br"));
     });
     if (board.current_turn.rolls > 0){
@@ -81,7 +87,7 @@ var displayBoard = function(board) {
     var pay_out = document.querySelector("#pay-out");
     pay_out.innerHTML = "";
 
-    document.querySelector('#current-player').innerHTML = "current player: " + board.current_player;
+    document.querySelector('#current-player').innerHTML = "current player: " + board.current_player.name;
     if (board.current_turn.rolls == 0){
         var dice_one = document.querySelector("#diceone");
         dice_one.innerHTML = "";
