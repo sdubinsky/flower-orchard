@@ -52,6 +52,7 @@ var buildPlayerElem = function(player, can_buy){
 };
 
 var displayBoard = function(board) {
+    //players
     var players_div = document.querySelector('#players');
     players_div.innerHTML = "";
     board.players.forEach(function(player){
@@ -59,6 +60,8 @@ var displayBoard = function(board) {
         let elem = buildPlayerElem(player, can_buy);
         players_div.appendChild(elem);
     });
+
+    //field
     var field_div = document.querySelector("#field");
     field_div.innerHTML = "";
     board.field.forEach(function(card){
@@ -76,6 +79,8 @@ var displayBoard = function(board) {
         }
         field_div.appendChild(document.createElement("br"));
     });
+
+    //pass button
     if (board.current_turn.rolls > 0){
         pass = document.createElement("button");
         pass.innerHTML = "pass";
@@ -86,6 +91,15 @@ var displayBoard = function(board) {
     }
     var pay_out = document.querySelector("#pay-out");
     pay_out.innerHTML = "";
+
+    //log
+    let log_div = document.querySelector("#log");
+    log_div.innerHTML = "";
+    board.log.forEach(function(line){
+        let elem = document.createElement("div");
+        elem.innerHTML = line;
+        log_div.appendChild(elem);
+    });
 
     document.querySelector('#current-player').innerHTML = "current player: " + board.current_player.name + ".  cash: " + board.current_player.cash;
     if (board.current_turn.rolls == 0){

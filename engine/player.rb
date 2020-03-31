@@ -32,11 +32,15 @@ class Player
   end
 
   def activate_green_cards total
-    @cash += activate_cards :green, total
+    new_cash = activate_cards :green, total
+    @cash += new_cash
+    "#{@name} earned #{new_cash} from green cards"
   end
 
   def activate_blue_cards total
-    @cash += activate_cards :blue, total
+    new_cash = activate_cards :blue, total
+    @cash += new_cash
+    "#{@name} earned #{new_cash} from blue cards"
   end
 
   def activate_red_cards total
