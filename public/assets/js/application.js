@@ -87,7 +87,7 @@ var displayBoard = function(board) {
     var pay_out = document.querySelector("#pay-out");
     pay_out.innerHTML = "";
 
-    document.querySelector('#current-player').innerHTML = "current player: " + board.current_player.name;
+    document.querySelector('#current-player').innerHTML = "current player: " + board.current_player.name + ".  cash: " + board.current_player.cash;
     if (board.current_turn.rolls == 0){
         var dice_one = document.querySelector("#diceone");
         dice_one.innerHTML = "";

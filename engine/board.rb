@@ -18,7 +18,10 @@ class Board
   def new_deck
     cards = []
     5.times do
-      cards += Card.get_cards
+      cards += Card.get_cards Card.regular_card_list
+    end
+    @players.count.times do 
+      cards += Card.get_cards Card.purple_card_list
     end
     cards.shuffle
   end
