@@ -75,7 +75,7 @@ class Board
         fine = p.activate_red_cards dice_total
         charge = current_player.pay fine
         p.cash += charge
-        @log.append "#{current_player.name} got $#{charge} from #{p.name}" if fine > 0
+        @log.append "#{p.name} got $#{charge} from #{current_player.name}" if fine > 0
       end
     end
     if current_player.cash == 0
@@ -106,7 +106,7 @@ class Board
   end
 
   def can_roll_again?
-    current_turn.rolls == 1 and current_player.can_roll_again?    
+    current_turn.rolls == 1 and current_player.can_roll_again?
   end
 
   def buy_card card_name
