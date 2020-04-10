@@ -10,7 +10,7 @@ class Board
     @players = []
     @commands = []
     @log = []
-    @deck = new_deck
+    @deck = []
     @field = []
     @started = false
     @turn_history = []
@@ -30,6 +30,7 @@ class Board
 
   def start
     @started = true
+    @deck = new_deck
     deal_field
     @current_player = 0
     @current_turn = Turn.new current_player
