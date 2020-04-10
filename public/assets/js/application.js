@@ -85,7 +85,7 @@ var displayBoard = function(board) {
         pass = document.createElement("button");
         pass.innerHTML = "pass";
         pass.onclick = function (event) {
-            ws.send(JSON.stringify({'game_id': getGameId(), 'message': 'end_turn'}));
+            ws.send(JSON.stringify({'game_id': getGameId(), 'message': 'buy card pass'}));
         };
         field_div.appendChild(pass);
     }

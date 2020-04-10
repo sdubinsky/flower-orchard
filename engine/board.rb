@@ -105,15 +105,23 @@ class Board
   end
 
   def can_roll_again?
-    current_turn.rolls < 2 and current_player.can_roll_again?    
+    current_turn.rolls == 1 and current_player.can_roll_again?    
   end
 
   def buy_card card_name
     raise "please start game" if not @started
+    if card_name == 'pass'
+      @log.append "#{current_player.name} passed."
+      if current_player.gets_free_money?
+        current_player.cash += 10
+        @log.append "#{current_player.name} gets 10 from the airport"
+      end
+      return
+    end
     card = field.find{|x| x.name.to_sym == card_name.to_sym}
     raise "couldn't find that card" if not card
-    current_player.buy_card card.name
-    @log.append "#{current_player.name} bought #{card.name}"
+    current_player.buy_card card_name.to_sym
+    @log.append "#{current_player.name} bought #{card_name}"
     replace_in_field card
     @current_turn.bought = true
   end
