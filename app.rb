@@ -4,6 +4,7 @@ require 'logger'
 require './engine/board'
 require './helpers'
 require 'pry'
+require 'pry-byebug'
 
 connstr = ENV['DATABASE_URL'] || "postgres://localhost/machikoro"
 DB = Sequel.connect connstr

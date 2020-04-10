@@ -2,6 +2,7 @@ require 'json'
 require_relative 'card'
 require_relative 'player'
 require_relative 'turn'
+require 'pry-byebug'
 
 class Board
   attr_accessor :players, :deck, :field, :started, :turnHistory, :current_turn, :commands
