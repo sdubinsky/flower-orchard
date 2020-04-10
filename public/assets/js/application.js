@@ -143,7 +143,7 @@ var displayBoard = function(board) {
 
     if (board.current_turn.rolls > 0 && !board.current_turn.paid_out) {
         var pay_out = document.querySelector("#pay-out");
-        pay_out.innerHTML = "Settle Up";
+        pay_out.innerHTML = "Accept Roll";
         var payout_button = document.createElement("button");
         pay_out.onclick = function (event) {
             ws.send(JSON.stringify({"game_id": getGameId(), 'message': 'run'}));
