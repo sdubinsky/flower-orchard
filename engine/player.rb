@@ -111,7 +111,7 @@ class Player
   end
 
   def can_roll_again?
-    improvements.find{|a| a.name == :amusement_park}.active
+    improvements.find{|a| a.name == :radio_tower}.active
   end
 
   def gets_free_money?
