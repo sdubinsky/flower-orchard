@@ -86,12 +86,12 @@ class Player
       when :has
         return 0 unless improvements.find{|a| a.name == v}
       when :name
-        return value * cards.
+        return value * hand.
                          select{|c| c.name == v}.
                          map{|c| c.count}.
                          reduce(0, :+)
       when :symbol
-        return value * cards.
+        return value * hand.
                          select{|c| c.symbol == v}.
                          map{|c| c.count}.
                          reduce(0, :+)
