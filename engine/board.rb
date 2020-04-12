@@ -5,7 +5,7 @@ require_relative 'turn'
 require 'pry-byebug'
 
 class Board
-  attr_accessor :players, :deck, :field, :started, :turnHistory, :current_turn, :commands
+  attr_accessor :players, :deck, :field, :started, :turnHistory, :current_turn, :commands, :game_over
   def initialize
     @players = []
     @commands = []
@@ -15,6 +15,7 @@ class Board
     @started = false
     @turn_history = []
     @current_player = nil
+    @game_over = false
   end
 
   def new_deck
@@ -87,6 +88,10 @@ class Board
   end
 
   def end_turn
+    check_game_over
+    if game_over
+      return
+    end
     if !(current_turn.roll_one == current_turn.roll_two and
       current_player.can_roll_again?)
       @current_player = (@current_player + 1) % @players.length
@@ -134,6 +139,10 @@ class Board
     @log.append "#{current_player.name} activated #{improvement_name}"
   end
 
+  def check_game_over
+    @game_over = current_player.has_won?
+  end
+
   def replace_in_field card
     field_card = field.find{|x| x == card}
     field_card.count -= 1
@@ -167,7 +176,8 @@ class Board
       current_turn: current_turn.to_json,
       can_roll_two: can_roll_two?,
       can_roll_again: can_roll_again?,
-      log: @log.last(10).reverse
+      log: @log.last(10).reverse,
+      game_over: @game_over
     }.to_json
   end
 end

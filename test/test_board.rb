@@ -32,4 +32,10 @@ class TestBoard < MiniTest::Test
     @board.run_turn
     assert_equal 1, @board.current_player.cash
   end
+
+  def test_purple_cards_exist
+    @board.start
+    assert @board.deck.find{|a| a.name == :tax_office}
+    
+  end
 end

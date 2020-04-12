@@ -52,6 +52,13 @@ var buildPlayerElem = function(player, can_buy){
 };
 
 var displayBoard = function(board) {
+
+    if (board.game_over) {
+        let body = document.querySelector("body");
+        body.innerHTML = "";
+        body.innerHTML = "Game over.  " + board.current_player.name + " won!"
+        return;
+    }
     //players
     var players_div = document.querySelector('#players');
     players_div.innerHTML = "";

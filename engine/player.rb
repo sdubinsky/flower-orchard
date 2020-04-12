@@ -139,6 +139,10 @@ class Player
     @cash -= improvement.cost
   end
 
+  def has_won?
+    improvements.all?{|i| i.active}
+  end
+
   def to_s
     "#{name}: $#{cash} on hand."
   end
