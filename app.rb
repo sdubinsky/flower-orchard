@@ -91,5 +91,10 @@ end
 #    each method should check if the relevant improvement is active.  What to do about rolling one/two dice?  What to do about taking another turn?  What to do about the airport?
 #10. figure out a query syntax for cards that depend on other cards to figure out how much they are.
 #      Something like: if it's an empty dict, just do that.  if it's a dict, search based on the dict, and multiply that total by the value. dict syntax: {search_term: value}.  Examples: {color: red}, {symbol: :factory}, {name: :flower_orchard}
-#11. purple cards.  Probably a special method for each one.  
+#11. purple cards.  Probably a special method for each one.
+#        [ ] stadium(2 from all)
+#        [ ] tv station(five from one)]
+#        [ ] business center(trade establishments)
+#        [ ] take one from everyone for each cup and toast
+#        [ ] half rounded down from everyone with 10 or more coins
 #12. if I accept a roll, it shouldn't still display the roll buttons.

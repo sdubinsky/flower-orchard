@@ -22,6 +22,8 @@ module Parser
         parse_buy tokens, board
       when 'roll'
         parse_roll tokens, board
+      when 'use'
+        parse_use tokens, board
       else
         logger.info "invalid command #{command}"
       end
@@ -70,6 +72,20 @@ module Parser
       board.roll_dice 2
     else
       raise 'invalid roll command'
+    end
+  end
+
+  def self.parse_use tokens, board
+    card_name = tokens.shift
+    case card_name
+    when 'tv_station'
+      target = tokens.shift
+      board.use_tv_station target
+    when 'business_center'
+      my_card = tokens.shift
+      target = tokens.shift
+      their_card = tokens.shift
+      board.use_business_center my_card, target, their_card
     end
   end
 end

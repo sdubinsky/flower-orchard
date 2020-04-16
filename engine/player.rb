@@ -48,7 +48,7 @@ class Player
   end
 
   def activate_purple_cards total
-    activate_cards :purple, total
+    
   end
 
   def pay total
@@ -122,12 +122,16 @@ class Player
   def buy_card card_name
     card = Card.new card_name
     raise "not enough money" if card.cost > @cash
+    add_card card
+    @cash -= card.cost
+  end
+
+  def add_card card
     if hand.include? card
       hand.find{|x| x == card}.count += 1
     else
       hand << card
-    end
-    @cash -= card.cost
+    end    
   end
 
   def activate_improvement name

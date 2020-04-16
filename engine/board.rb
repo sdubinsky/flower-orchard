@@ -5,7 +5,7 @@ require_relative 'turn'
 require 'pry-byebug'
 
 class Board
-  attr_accessor :players, :deck, :field, :started, :turnHistory, :current_turn, :commands, :game_over
+  attr_accessor :players, :deck, :field, :started, :turnHistory, :current_turn, :commands, :game_over, :tv_station, :business_center
   def initialize
     @players = []
     @commands = []
@@ -16,6 +16,8 @@ class Board
     @turn_history = []
     @current_player = nil
     @game_over = false
+    @tv_station = false
+    @business_center = false
   end
 
   def new_deck
@@ -70,6 +72,7 @@ class Board
     return if @current_turn.paid_out
     dice_total = current_turn.roll_one + current_turn.roll_two
     dice_total += 2 if current_turn.add_two
+    check_specials total
     @log.append current_player.activate_green_cards dice_total
     @players.each{|p| @log.append p.activate_blue_cards dice_total}
     @players.each do |p|
@@ -88,6 +91,9 @@ class Board
   end
 
   def end_turn
+    if tv_station or business_center
+      return
+    end
     check_game_over
     if game_over
       return
@@ -113,6 +119,51 @@ class Board
 
   def can_roll_again?
     current_turn.rolls == 1 and current_player.can_roll_again?
+  end
+
+  def check_specials total
+    tax_office = current_player.hand.find{|x| x.name == :tax_office}
+    if tax_office and tax_office.active_numbers.include? total
+      @tax_office = true
+    end
+
+    business_center = current_player.hand.find{|x| x.name == :business_center}
+    if business_center and business_center.active_numbers.include? total
+      @business_center = true
+    end
+  end
+
+  def use_tv_station target
+    return if not @tv_station
+    target = players.find{|a| a.name == target}
+    fine = 5
+    if target.cash < 5
+      fine = target.cash
+    end
+
+    target.cash -= fine
+    current_player.cash += fine
+    @tv_station = false
+  end
+
+  def use_business_center my_card, target, their_card
+    return if not @business_center
+    target = players.find{|a| a.name == target}
+    my_card = current_player.hand.find{|a| a.name == my_card.to_sym}
+    their_card = target.hand.find{|a| a.name == their_card.to_sym}
+    if my_card.count == 1
+      current_player.hand.delete(my_card)
+    else
+      my_card.count -= 1
+    end
+    if their_card.count == 1
+      target.hand.delete(their_card)
+    else
+      their_card.count -= 1
+    end
+    current_player.add_card Card.new(their_card.name)
+    target.add_card Card.new(my_card.name)
+    @business_center = false
   end
 
   def buy_card card_name
@@ -177,6 +228,8 @@ class Board
       can_roll_two: can_roll_two?,
       can_roll_again: can_roll_again?,
       log: @log.last(10).reverse,
+      business_center: @business,
+      tv_station: @tv_station,
       game_over: @game_over
     }.to_json
   end
