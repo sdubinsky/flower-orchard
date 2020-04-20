@@ -83,6 +83,10 @@ class Board
         @log.append "#{p.name} got $#{charge} from #{current_player.name}" if fine > 0
       end
     end
+
+    use_stadium dice_total
+    use_publisher dice_total
+    use_tax_office dice_total
     if current_player.cash == 0
       current_player.cash += 1
       @log.append "#{current_player.name} got their pity coin"
@@ -170,6 +174,51 @@ class Board
     @business_center = false
   end
 
+  def use_stadium total
+    card = current_player.hand.find{|c| c.name == :stadium}
+    return unless card
+    return unless card.active_numbers.include? total
+    players.each do |player|
+      next if player == current_player
+      fine = 2
+      fine = player.cash if player.cash < fine
+      player.cash -= fine
+      current_player.cash += fine
+      @log.append "#{current_player.name} got #{fine} from #{player.name} from stadium"
+    end
+  end
+
+  def use_publisher total
+    card = current_player.hand.find{|c| c.name == :publisher}
+    return unless card
+    return unless card.active_numbers.include? total
+    players.each do |player|
+      next if player == current_player
+      fine = player.hand.select{|a| [:cup, :toast].include? a.symbol}.
+               map{|a| a.count}.
+               reduce(0, :+)
+      fine = player.cash if player.cash < fine
+      player.cash -= fine
+      current_player.cash += fine
+      @log.append "#{current_player.name} got #{fine} from #{player.name} from publisher"
+    end    
+  end
+
+  def use_tax_office total
+    card = current_player.hand.find{|c| c.name == :tax_office}
+    return unless card
+    return unless card.active_numbers.include? total
+    players.each do |player|
+      next if player == current_player
+      if player.cash >= 10
+        fine = player.cash / 2
+        player.cash -= fine
+        current_player.cash += fine
+        @log.append "#{current_player.name} got #{fine} from #{player.name} from taxes"
+      end
+    end    
+  end
+  
   def buy_card card_name
     raise "please start game" if not @started
     if card_name == 'pass'
