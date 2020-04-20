@@ -136,11 +136,15 @@ class Board
   def use_tv_station target
     return if not @tv_station
     target = players.find{|a| a.name == target}
+    if target == current_player
+      @log.append "can't target current player"
+      return
+    end
     fine = 5
     if target.cash < 5
       fine = target.cash
     end
-
+    @log.append "#{current_player.name} got #{fine} from #{target.name} through a tv station"
     target.cash -= fine
     current_player.cash += fine
     @tv_station = false

@@ -52,7 +52,6 @@ var buildPlayerElem = function(player, can_buy){
 };
 
 var displayBoard = function(board) {
-
     if (board.game_over) {
         let body = document.querySelector("body");
         body.innerHTML = "";
@@ -87,6 +86,31 @@ var displayBoard = function(board) {
         field_div.appendChild(document.createElement("br"));
     });
 
+    //special cards
+    if (board.tv_station){
+        document.querySelector("#tv-station-form").removeProperty('display');
+        let button = document.querySelector("#tv-station-submit");
+        let target = document.querySelector("#tv-station-target").value;
+        button.onclick = function (event) {
+            ws.send(JSON.stringify({'game_id': getGameId(), 'message': "use tax_office " + target}));
+        };
+    } else {
+        let button = document.querySelector("#tv-station-submit");
+        document.querySelector("#tv-station-target").value = '';
+        button.onclick = function (event) {};
+        document.querySelector("#tv-station-form").style.display = 'none';
+    }
+
+    if (board.business_center) {
+        document.querySelector("#businss-center-form").removeProperty('display');
+        let user_card = document.querySelector("#business-center-own-card").value;
+        let target_player = document.querySelector("#business-center-target").value;
+        let target_card = document.querySelector("#business-center-target-card").value;
+        let button = document.querySelector("#business-center-submit");
+        button.onclick = function (event) {
+            ws.send(JSON.stringify({'game_id': getGameId(), 'message': "use business_center " + own_card + " " + target_player + " " + target_card}));
+        };
+    }
     //pass button
     if (board.current_turn.rolls > 0){
         pass = document.createElement("button");
