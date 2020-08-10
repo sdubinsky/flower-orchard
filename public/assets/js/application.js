@@ -102,7 +102,7 @@ var displayBoard = function(board) {
     }
 
     if (board.business_center) {
-        document.querySelector("#businss-center-form").removeProperty('display');
+        document.querySelector("#business-center-form").removeProperty('display');
         let user_card = document.querySelector("#business-center-own-card").value;
         let target_player = document.querySelector("#business-center-target").value;
         let target_card = document.querySelector("#business-center-target-card").value;
@@ -110,6 +110,10 @@ var displayBoard = function(board) {
         button.onclick = function (event) {
             ws.send(JSON.stringify({'game_id': getGameId(), 'message': "use business_center " + own_card + " " + target_player + " " + target_card}));
         };
+    } else {
+        let button = document.querySelector("#business-center-submit");
+        button.onclick = function (event) {};
+        document.querySelector("#business-center-form").style.display = 'none';
     }
     //pass button
     if (board.current_turn.rolls > 0){
