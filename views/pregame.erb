@@ -3,5 +3,11 @@
     <input type="text" form="addplayer" name="playername" class="formquestion" />
     <input type="submit" class="submit-button btn" value="Submit" />
 </form>
+<div class="players-list">
+    Current players:<br />
+    <% @board.players.each do |player| %>
+        <%= player.name %><br />
+    <% end %>
+</div>
 <br />
 <a href="/game/<%= @game.id %>/start" >Start Game</a>
